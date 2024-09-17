@@ -47,9 +47,9 @@ if ($.isNode()) {
   if (process.env.PIGPETSHARECODE) {
     shareId = process.env.PIGPETSHARECODE
   } else{
-    let res = await getAuthorShareCode('https://raw.githubusercontent.com/zero205/updateTeam/main/shareCodes/pigPet.json')
+    let res = await getAuthorShareCode('')
     if (!res) {
-      res = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/pigPet.json')
+      res = await getAuthorShareCode('')
     }
     if (res){
       shareId = res[Math.floor((Math.random() * res.length))];
@@ -77,12 +77,12 @@ if ($.isNode()) {
     }
   }
   console.log(`\n======开始大转盘助力======\n`);
-  $.helpId = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/pig.json');
+  $.helpId = await getAuthorShareCode('');
   $.shareCodes = [...$.shareCodes, ...($.helpId || [])]
   for (let j = 0; j < cookiesArr.length; j++) {
     cookie = cookiesArr[j];
     if ($.shareCodes && $.shareCodes.length) {
-      console.log(`\n自己账号内部循环互助，有剩余次数再帮【zero205】助力\n`);
+      console.log(`\n自己账号内部循环互助\n`);
       for (let item of $.shareCodes) {
         await pigPetLotteryHelpFriend(item)
         await $.wait(1000)
@@ -197,8 +197,8 @@ function pigPetUserBag() {
                   }
                   for (let item of data.resultData.resultData.goods) {
                     if (item.count >= 20) {
-                      let i = 50
-                      console.log(`\n每次运行最多喂食50次`)
+                      let i = parseInt(process.env.PIG_FEED_LIMIT || 50)
+                      console.log(`\n每次运行最多喂食${i}次(环境变量PIG_FEED_LIMIT)`)
                       do {
                         console.log(`\n10秒后开始喂食${item.goodsName}，当前数量为${item.count}g`)
                         await $.wait(10000);
